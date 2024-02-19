@@ -37,7 +37,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: boxhive/flutter-sdk
+          images: boxhive/flutter-sdk-node
           tags: |
             type=ref,event=branch
             type=ref,event=pr
