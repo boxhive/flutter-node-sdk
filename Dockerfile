@@ -28,5 +28,6 @@ RUN mkdir $FLUTTER_HOME \
 RUN sdkmanager --sdk_root=$ANDROID_SDK_ROOT --install "cmdline-tools;latest" && \
     dart --disable-analytics && \
     flutter config --no-cli-animations && \
+    flutter config --no-analytics && \
     flutter precache && \
     flutter doctor --android-licenses
