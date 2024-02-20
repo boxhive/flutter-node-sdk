@@ -17,6 +17,10 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | sh && \
     zip \
     git
 
+RUN corepack enable && \
+    mkdir -p /home/mobiledevops/.cache/yarn && \
+    chown -R mobiledevops:mobiledevops /home/mobiledevops/.cache
+
 USER mobiledevops
 
 RUN mkdir $FLUTTER_HOME \
