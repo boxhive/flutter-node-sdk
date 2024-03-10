@@ -1,6 +1,6 @@
 FROM mobiledevops/android-sdk-image:34.0.0-jdk17
 
-ARG FLUTTER_SDK_VERSION=3.19.2
+ARG FLUTTER_SDK_VERSION=3.19.3
 
 ENV FLUTTER_HOME "/home/mobiledevops/.flutter-sdk"
 ENV PATH $PATH:$FLUTTER_HOME/bin
