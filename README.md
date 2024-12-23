@@ -9,9 +9,21 @@ Docker image built with Android SDK, Flutter SDK and nodeJS to handle NX monorep
 
 ## Versions
 
-From 3.27.1 versions will differ from flutter version and become a combination of JDK and Flutter.
+From 3.27.1 versions will differ from flutter version and use a combination of JDK, flutter SDK, and semantic version.
 
-Example: `21-3.27.1`
+Example: 
+```
+21-3.27.1-0
+```
+
+Where:
+* `21`: refer to JDK
+* `3.27.1`: refers to Flutter SDK
+* `0`: refers to semantic version associated with the current image version
+
+If a fix occurs without changing JDK or SDK version, only the last part will be bumped.
+
+*Note*: Default installed gradle version has not a big impact on image behavior since gradle version can be changed through project properties.
 
 ## Usage
 
