@@ -41,9 +41,13 @@ jobs:
           tags: |
             type=ref,event=branch
             type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
+            type=ref,event=tag
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
+            
+      - name: Show tags
+        run: |
+          echo "==> Docker tags to be pushed:"
+          echo "${{ steps.meta.outputs.tags }}"
             
       - name: Determine cache
         id: determine_cache
