@@ -116,7 +116,6 @@ RUN mkdir $FLUTTER_HOME \
     && rm flutter_linux_${FLUTTER_SDK_VERSION}-stable.tar.xz
 
 RUN dart --disable-analytics && \
-    flutter config --no-cli-animations && \
-    flutter config --no-analytics && \
+    flutter config --no-cli-animations --no-analytics && \
     flutter precache && \
     flutter doctor --android-licenses
