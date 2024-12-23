@@ -54,6 +54,7 @@ jobs:
             echo "cache_to=type=gha,mode=max" >> $GITHUB_OUTPUT
           else
             echo "cache_to=" >> $GITHUB_OUTPUT
+          fi
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
