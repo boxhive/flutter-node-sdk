@@ -20,6 +20,13 @@ ENV PATH=$PATH:$ANDROID_HOME/cmdline-tools:$ANDROID_HOME/cmdline-tools/bin:$ANDR
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=en_US.UTF-8
 
+# Set user
+ENV HOME=/home/mobiledevops
+
+RUN groupadd mobiledevops \
+    && useradd -g mobiledevops --create-home --shell /bin/bash mobiledevops \
+    && chown -R mobiledevops:mobiledevops /home/mobiledevops
+
 # Add base environment
 RUN apt-get -qq update \
     && apt-get -qqy --no-install-recommends install \
@@ -46,7 +53,7 @@ RUN apt-get -qq update \
     git > /dev/null \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# nodejs
+# Nodejs
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | sh \ 
     && apt-get -qq update \
     && apt-get -qqy --no-install-recommends install \
@@ -66,8 +73,8 @@ RUN mkdir -p /home/mobiledevops/.android \
     && mkdir -p /home/mobiledevops/app \
     && touch /home/mobiledevops/.android/repositories.cfg
 
-ENV HOME=/home/mobiledevops
 WORKDIR $HOME/app
+
 
 # Install SDKMAN
 RUN curl -s "https://get.sdkman.io" | bash
@@ -94,6 +101,10 @@ RUN yes | $ANDROID_HOME/cmdline-tools/bin/sdkmanager --licenses --sdk_root=${AND
 RUN source "${HOME}/.sdkman/bin/sdkman-init.sh" \
     && sdk install gradle ${GRADLE_VERSION}
 
+# Set user
+USER mobiledevops
+
+# Install and configure flutter
 RUN mkdir $FLUTTER_HOME \
     && cd $FLUTTER_HOME \
     && curl --fail --remote-time --location -O https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${FLUTTER_SDK_VERSION}-stable.tar.xz \
