@@ -1,27 +1,98 @@
-FROM mobiledevops/android-sdk-image:34.0.0-jdk17
+FROM ubuntu:24.04
 
-ARG FLUTTER_SDK_VERSION=3.19.3
+# Based on original work from https://github.com/mobiledevops/android-sdk-image
+LABEL maintainer="boxhive"
 
-ENV FLUTTER_HOME "/home/mobiledevops/.flutter-sdk"
-ENV PATH $PATH:$FLUTTER_HOME/bin
+ARG FLUTTER_SDK_VERSION=3.27.1
 
-USER root
+# Command line tools only
+# https://developer.android.com/studio/index.html
+ENV ANDROID_SDK_TOOLS_VERSION=11076708
+ENV ANDROID_SDK_TOOLS_CHECKSUM=2d2d50857e4eb553af5a6dc3ad507a17adf43d115264b1afc116f95c92e5e258
 
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | sh && \
-    apt-get update && \
-    apt-get install -y nodejs \
+ENV GRADLE_VERSION=8.9
+
+ENV ANDROID_HOME="/opt/android-sdk-linux"
+ENV ANDROID_SDK_ROOT=$ANDROID_HOME
+ENV FLUTTER_HOME="/home/mobiledevops/.flutter-sdk"
+ENV PATH=$PATH:$ANDROID_HOME/cmdline-tools:$ANDROID_HOME/cmdline-tools/bin:$ANDROID_HOME/platform-tools:$FLUTTER_HOME/bin
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LANG=en_US.UTF-8
+
+# Add base environment
+RUN apt-get -qq update \
+    && apt-get -qqy --no-install-recommends install \
     ruby-full \
-    curl \
-    unzip \
     xz-utils \
+    apt-utils \
+    build-essential \
+    openjdk-21-jdk \
+    openjdk-21-jre-headless \
+    software-properties-common \
+    libssl-dev \
+    libffi-dev \
+    python3-dev \
+    cargo \
+    pkg-config\  
+    libstdc++6 \
+    libpulse0 \
+    libglu1-mesa \
+    openssh-server \
     zip \
-    git
+    unzip \
+    curl \
+    lldb \
+    git > /dev/null \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN corepack enable && \
-    mkdir -p /home/mobiledevops/.cache/yarn && \
-    chown -R mobiledevops:mobiledevops /home/mobiledevops/.cache
+# nodejs
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | sh \ 
+    && apt-get -qq update \
+    && apt-get -qqy --no-install-recommends install \
+    nodejs > /dev/null \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    && corepack enable && \
+    mkdir -p /home/mobiledevops/.cache/yarn
 
-USER mobiledevops
+# Download and unzip Android SDK Tools
+RUN curl -s https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_TOOLS_VERSION}_latest.zip > /tools.zip \
+    && echo "$ANDROID_SDK_TOOLS_CHECKSUM ./tools.zip" | sha256sum -c \
+    && unzip -qq /tools.zip -d $ANDROID_HOME \
+    && rm -v /tools.zip
+
+# Add folder for SDK files 
+RUN mkdir -p /home/mobiledevops/.android \
+    && mkdir -p /home/mobiledevops/app \
+    && touch /home/mobiledevops/.android/repositories.cfg
+
+ENV HOME=/home/mobiledevops
+WORKDIR $HOME/app
+
+# Install SDKMAN
+RUN curl -s "https://get.sdkman.io" | bash
+SHELL ["/bin/bash", "-c"]   
+
+# Update sdkmanager
+RUN yes | $ANDROID_HOME/cmdline-tools/bin/sdkmanager --licenses --sdk_root=${ANDROID_SDK_ROOT} \ 
+    && $ANDROID_HOME/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --update \
+    && $ANDROID_HOME/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_SDK_ROOT} \
+    "build-tools;35.0.0" \
+    "build-tools;34.0.0" \
+    "build-tools;33.0.3" \
+    "platforms;android-35" \
+    "platforms;android-34" \
+    "platforms;android-33" \
+    "platform-tools" \
+    "extras;android;m2repository" \
+    "extras;google;google_play_services" \
+    "extras;google;m2repository" \
+    "add-ons;addon-google_apis-google-24" \
+    "cmdline-tools;latest"
+
+# Install Gradle
+RUN source "${HOME}/.sdkman/bin/sdkman-init.sh" \
+    && sdk install gradle ${GRADLE_VERSION}
 
 RUN mkdir $FLUTTER_HOME \
     && cd $FLUTTER_HOME \
@@ -29,8 +100,7 @@ RUN mkdir $FLUTTER_HOME \
     && tar xf flutter_linux_${FLUTTER_SDK_VERSION}-stable.tar.xz --strip-components=1 \
     && rm flutter_linux_${FLUTTER_SDK_VERSION}-stable.tar.xz
 
-RUN sdkmanager --sdk_root=$ANDROID_SDK_ROOT --install "cmdline-tools;latest" && \
-    dart --disable-analytics && \
+RUN dart --disable-analytics && \
     flutter config --no-cli-animations && \
     flutter config --no-analytics && \
     flutter precache && \
