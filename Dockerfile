@@ -12,17 +12,18 @@ ENV ANDROID_SDK_TOOLS_CHECKSUM=2d2d50857e4eb553af5a6dc3ad507a17adf43d115264b1afc
 
 ENV GRADLE_VERSION=8.9
 
+ENV HOME=/home/mobiledevops
 ENV ANDROID_HOME="/opt/android-sdk-linux"
 ENV ANDROID_SDK_ROOT=$ANDROID_HOME
 ENV FLUTTER_HOME="/home/mobiledevops/.flutter-sdk"
-ENV PATH=$PATH:$ANDROID_HOME/cmdline-tools:$ANDROID_HOME/cmdline-tools/bin:$ANDROID_HOME/platform-tools:$FLUTTER_HOME/bin
+ENV GEM_HOME="$HOME/.gems"
+
+ENV PATH=$ANDROID_HOME/cmdline-tools:$ANDROID_HOME/cmdline-tools/bin:$ANDROID_HOME/platform-tools:$FLUTTER_HOME/bin:$GEM_HOME/bin:$PATH
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=en_US.UTF-8
 
 # Set user
-ENV HOME=/home/mobiledevops
-
 RUN groupadd mobiledevops \
     && useradd -g mobiledevops --create-home --shell /bin/bash mobiledevops \
     && chown -R mobiledevops:mobiledevops /home/mobiledevops
@@ -103,6 +104,9 @@ RUN source "${HOME}/.sdkman/bin/sdkman-init.sh" \
 
 # Set user
 USER mobiledevops
+
+# Ruby and bundler setup
+RUN gem install bundler
 
 # Install and configure flutter
 RUN mkdir $FLUTTER_HOME \
