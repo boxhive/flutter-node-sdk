@@ -25,8 +25,7 @@ ENV LANG=en_US.UTF-8
 
 # Set user
 RUN groupadd mobiledevops \
-    && useradd -g mobiledevops --create-home --shell /bin/bash mobiledevops \
-    && chown -R mobiledevops:mobiledevops /home/mobiledevops
+    && useradd -g mobiledevops --create-home --shell /bin/bash mobiledevops
 
 # Add base environment
 RUN apt-get -qq update \
@@ -76,7 +75,6 @@ RUN mkdir -p /home/mobiledevops/.android \
 
 WORKDIR $HOME/app
 
-
 # Install SDKMAN
 RUN curl -s "https://get.sdkman.io" | bash
 SHELL ["/bin/bash", "-c"]   
@@ -103,6 +101,7 @@ RUN source "${HOME}/.sdkman/bin/sdkman-init.sh" \
     && sdk install gradle ${GRADLE_VERSION}
 
 # Set user
+RUN chown -R mobiledevops:mobiledevops /home/mobiledevops
 USER mobiledevops
 
 # Ruby and bundler setup
