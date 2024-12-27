@@ -86,9 +86,15 @@ RUN yes | $ANDROID_HOME/cmdline-tools/bin/sdkmanager --licenses --sdk_root=${AND
     "build-tools;35.0.0" \
     "build-tools;34.0.0" \
     "build-tools;33.0.3" \
+    "build-tools;32.0.0" \
+    "build-tools;31.0.0" \
+    "build-tools;30.0.1" \
     "platforms;android-35" \
     "platforms;android-34" \
     "platforms;android-33" \
+    "platforms;android-32" \
+    "platforms;android-31" \
+    "platforms;android-30" \
     "platform-tools" \
     "extras;android;m2repository" \
     "extras;google;google_play_services" \
