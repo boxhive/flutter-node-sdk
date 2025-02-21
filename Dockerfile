@@ -12,7 +12,7 @@ ARG TARGETARCH
 ENV HOME=/home/mobiledevops
 ENV ANDROID_HOME="/opt/android-sdk-linux"
 ENV ANDROID_SDK_ROOT=$ANDROID_HOME
-ENV FLUTTER_HOME="/home/mobiledevops/.flutter-sdk"
+ENV FLUTTER_HOME="/home/mobiledevops/flutter"
 ENV GEM_HOME="$HOME/.gems"
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=en_US.UTF-8
@@ -76,27 +76,25 @@ RUN chown -R mobiledevops:mobiledevops /home/mobiledevops
 USER mobiledevops
 
 # Install bundler (Ruby)
-# RUN gem install bundler
+RUN gem install bundler
 
 # Install and configure Flutter
-RUN mkdir -p $FLUTTER_HOME
-WORKDIR $FLUTTER_HOME
+WORKDIR $HOME
+
 # Conditionally download and extract Flutter based on TARGETARCH
 RUN if [ "$TARGETARCH" = "arm64" ]; then \
       echo "Downloading Flutter for ARM64"; \
       curl --fail --remote-time --location -O https://storage.googleapis.com/flutter_infra_release/releases/stable/macos/flutter_macos_arm64_${FLUTTER_SDK_VERSION}-stable.zip && \
       unzip flutter_macos_arm64_${FLUTTER_SDK_VERSION}-stable.zip -d . && \
-      rm flutter_macos_arm64_${FLUTTER_SDK_VERSION}-stable.zip && \
-      mv flutter/* . ;\
+      rm flutter_macos_arm64_${FLUTTER_SDK_VERSION}-stable.zip; \
     else \
       echo "Downloading Flutter for AMD64"; \
       curl --fail --remote-time --location -O https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${FLUTTER_SDK_VERSION}-stable.tar.xz && \
-      tar xf flutter_linux_${FLUTTER_SDK_VERSION}-stable.tar.xz --strip-components=1 && \
+      tar xf flutter_linux_${FLUTTER_SDK_VERSION}-stable.tar.xz && \
       rm flutter_linux_${FLUTTER_SDK_VERSION}-stable.tar.xz; \
     fi
 
-RUN ls -lah .
-RUN ls -lah bin || true
+WORKDIR $FLUTTER_HOME
 
 # Final Flutter setup
 RUN dart --disable-analytics && \
