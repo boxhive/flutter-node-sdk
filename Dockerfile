@@ -3,7 +3,7 @@ FROM ubuntu:24.04
 # Based on original work from https://github.com/mobiledevops/android-sdk-image
 LABEL maintainer="boxhive"
 
-ARG FLUTTER_SDK_VERSION=3.27.1
+ARG FLUTTER_SDK_VERSION=3.29.0
 
 # Command line tools only
 # https://developer.android.com/studio/index.html

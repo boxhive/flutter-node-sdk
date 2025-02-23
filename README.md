@@ -9,7 +9,7 @@ Docker image built with Android SDK, Flutter SDK and nodeJS to handle NX monorep
 
 ## Versions
 
-From 3.27.1 versions will differ from flutter version and use a combination of JDK, flutter SDK, and semantic version.
+From version `3.27.1`, versioning will differ from flutter one and use a combination of JDK, flutter SDK, and semantic version.
 
 Example: 
 ```
@@ -35,7 +35,7 @@ image: boxhive/flutter-sdk-node:latest
 
 ## Image tools versions
 
-* Flutter SDK: `3.27.1`
+* Flutter SDK: `3.29.0`
 * Android SDK: `35`
 * OpenJDK: `21`
 * Gradle: `8.9`
