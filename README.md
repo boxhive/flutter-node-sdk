@@ -7,6 +7,14 @@
 
 Docker image built with Android SDK, Flutter SDK and nodeJS to handle NX monorepos containing both frontend, backend and flutter mobile apps.
 
+## Image tools versions
+
+* Flutter SDK: `3.35.1`
+* Android SDK: `36`
+* OpenJDK: `21`
+* Gradle: `8.13`
+* nodeJS: `20`
+
 ## Versions
 
 From version `3.27.1`, versioning will differ from flutter one and use a combination of JDK, flutter SDK, and semantic version.
@@ -32,11 +40,3 @@ Use this image in gitlab-ci or any other CI you need.
 ```yaml
 image: boxhive/flutter-sdk-node:latest
 ```
-
-## Image tools versions
-
-* Flutter SDK: `3.32.8`
-* Android SDK: `36`
-* OpenJDK: `21`
-* Gradle: `8.13`
-* nodeJS: `20`
