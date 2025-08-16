@@ -3,7 +3,7 @@ FROM ubuntu:24.04
 # Based on original work from https://github.com/mobiledevops/android-sdk-image
 LABEL maintainer="boxhive"
 
-ARG FLUTTER_SDK_VERSION=3.29.0
+ARG FLUTTER_SDK_VERSION=3.32.8
 
 # Command line tools only
 # https://developer.android.com/studio/index.html
@@ -83,12 +83,14 @@ SHELL ["/bin/bash", "-c"]
 RUN yes | $ANDROID_HOME/cmdline-tools/bin/sdkmanager --licenses --sdk_root=${ANDROID_SDK_ROOT} \ 
     && $ANDROID_HOME/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --update \
     && $ANDROID_HOME/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_SDK_ROOT} \
+    "build-tools;36.0.0" \
     "build-tools;35.0.0" \
     "build-tools;34.0.0" \
     "build-tools;33.0.3" \
     "build-tools;32.0.0" \
     "build-tools;31.0.0" \
     "build-tools;30.0.1" \
+    "platforms;android-36" \
     "platforms;android-35" \
     "platforms;android-34" \
     "platforms;android-33" \
