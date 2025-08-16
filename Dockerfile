@@ -13,9 +13,9 @@ ENV ANDROID_SDK_TOOLS_CHECKSUM=7ec965280a073311c339e571cd5de778b9975026cfcbe79f2
 ENV GRADLE_VERSION=8.13
 
 ENV HOME=/home/mobiledevops
-ENV ANDROID_HOME="/opt/android-sdk-linux"
+ENV ANDROID_HOME="$HOME/.android-sdk-linux"
 ENV ANDROID_SDK_ROOT=$ANDROID_HOME
-ENV FLUTTER_HOME="/home/mobiledevops/.flutter-sdk"
+ENV FLUTTER_HOME="$HOME/.flutter-sdk"
 ENV GEM_HOME="$HOME/.gems"
 
 ENV PATH=$ANDROID_HOME/cmdline-tools:$ANDROID_HOME/cmdline-tools/bin:$ANDROID_HOME/platform-tools:$FLUTTER_HOME/bin:$GEM_HOME/bin:$PATH
