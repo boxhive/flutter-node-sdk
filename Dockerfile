@@ -3,12 +3,12 @@ FROM ubuntu:24.04
 # Based on original work from https://github.com/mobiledevops/android-sdk-image
 LABEL maintainer="boxhive"
 
-ARG FLUTTER_SDK_VERSION=3.32.8
+ARG FLUTTER_SDK_VERSION=3.35.1
 
 # Command line tools only
-# https://developer.android.com/studio/index.html
-ENV ANDROID_SDK_TOOLS_VERSION=11076708
-ENV ANDROID_SDK_TOOLS_CHECKSUM=2d2d50857e4eb553af5a6dc3ad507a17adf43d115264b1afc116f95c92e5e258
+# https://developer.android.com/studio/index.html#command-line-tools-only
+ENV ANDROID_SDK_TOOLS_VERSION=13114758
+ENV ANDROID_SDK_TOOLS_CHECKSUM=7ec965280a073311c339e571cd5de778b9975026cfcbe79f2b1cdcb1e15317ee
 
 ENV GRADLE_VERSION=8.13
 

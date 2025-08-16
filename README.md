@@ -35,7 +35,7 @@ image: boxhive/flutter-sdk-node:latest
 
 ## Image tools versions
 
-* Flutter SDK: `3.32.8`
+* Flutter SDK: `3.35.1`
 * Android SDK: `36`
 * OpenJDK: `21`
 * Gradle: `8.13`
