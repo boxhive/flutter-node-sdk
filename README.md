@@ -38,5 +38,5 @@ image: boxhive/flutter-sdk-node:latest
 * Flutter SDK: `3.32.8`
 * Android SDK: `36`
 * OpenJDK: `21`
-* Gradle: `8.10`
+* Gradle: `8.13`
 * nodeJS: `20`
