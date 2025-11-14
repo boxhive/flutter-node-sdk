@@ -10,7 +10,7 @@ Docker image built with Android SDK, Flutter SDK and nodeJS to handle NX monorep
 ## Image tools versions
 
 * Flutter SDK: `3.38.0`
-* Android SDK: `36`
+* Android SDK: `36` (`>= 34` available)
 * OpenJDK: `21`
 * Gradle: `8.13`
 * nodeJS: `20`

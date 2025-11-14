@@ -86,27 +86,23 @@ RUN yes | $ANDROID_HOME/cmdline-tools/bin/sdkmanager --licenses --sdk_root=${AND
     "build-tools;36.0.0" \
     "build-tools;35.0.0" \
     "build-tools;34.0.0" \
-    "build-tools;33.0.3" \
-    "build-tools;32.0.0" \
-    "build-tools;31.0.0" \
-    "build-tools;30.0.1" \
     "platforms;android-36" \
     "platforms;android-35" \
     "platforms;android-34" \
-    "platforms;android-33" \
-    "platforms;android-32" \
-    "platforms;android-31" \
-    "platforms;android-30" \
     "platform-tools" \
     "extras;android;m2repository" \
     "extras;google;google_play_services" \
     "extras;google;m2repository" \
     "add-ons;addon-google_apis-google-24" \
-    "ndk;27.2.12479018" \
-    "ndk;28.2.13676358" \
     "ndk;29.0.14206865" \
     "cmake;3.22.1" \
     "cmdline-tools;latest"
+
+# Verify NDK and CMake installation
+RUN echo "Verifying NDK and CMake installation..." \
+    && ls -la $ANDROID_HOME/ndk/ || echo "NDK directory not found" \
+    && ls -la $ANDROID_HOME/cmake/ || echo "CMake directory not found" \
+    && $ANDROID_HOME/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --list_installed | grep -E "(ndk|cmake)"
 
 # Install Gradle
 RUN source "${HOME}/.sdkman/bin/sdkman-init.sh" \
@@ -130,3 +126,11 @@ RUN dart --disable-analytics && \
     flutter config --no-cli-animations --no-analytics && \
     flutter precache && \
     flutter doctor --android-licenses
+
+# Create a dummy Flutter project and build it to trigger NDK/CMake installation
+RUN cd /tmp \
+    && flutter create --platforms=android dummy_app \
+    && cd dummy_app \
+    && flutter build apk --release \
+    && cd / \
+    && rm -rf /tmp/dummy_app
