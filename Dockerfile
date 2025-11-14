@@ -98,12 +98,6 @@ RUN yes | $ANDROID_HOME/cmdline-tools/bin/sdkmanager --licenses --sdk_root=${AND
     "cmake;3.22.1" \
     "cmdline-tools;latest"
 
-# Verify NDK and CMake installation
-RUN echo "Verifying NDK and CMake installation..." \
-    && ls -la $ANDROID_HOME/ndk/ || echo "NDK directory not found" \
-    && ls -la $ANDROID_HOME/cmake/ || echo "CMake directory not found" \
-    && $ANDROID_HOME/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --list_installed | grep -E "(ndk|cmake)"
-
 # Install Gradle
 RUN source "${HOME}/.sdkman/bin/sdkman-init.sh" \
     && sdk install gradle ${GRADLE_VERSION}

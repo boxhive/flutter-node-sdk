@@ -13,18 +13,37 @@ jobs:
   docker:
     name: Docker build and push
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 45
     strategy:
       fail-fast: false
 
     steps:
       - name: Free up disk space
         run: |
-          echo "Disk space before cleanup:"
+          echo "=== Disk space before cleanup ==="
           df -h
+          echo "=== Removing unnecessary packages ==="
           sudo rm -rf /opt/hostedtoolcache
-          echo "Disk space after cleanup:"
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/local/.ghcup
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf /usr/local/graalvm
+          sudo rm -rf /usr/share/swift
+          sudo rm -rf /opt/az
+          sudo rm -rf /usr/share/gradle-*
+          sudo rm -rf /opt/microsoft
+          echo "=== Cleaning package managers ==="
+          sudo apt-get clean
+          sudo apt-get autoremove -y
+          sudo apt-get autoclean -y
+          echo "=== Cleaning Docker ==="
+          docker system prune -af --volumes || true
+          echo "=== Disk space after cleanup ==="
           df -h
+          echo "=== Available space on root ==="
+          df -h / | awk 'NR==2 {print "Available: " $4}'
 
       - name: Check out the repo
         uses: actions/checkout@v4
