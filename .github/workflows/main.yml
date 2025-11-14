@@ -18,6 +18,14 @@ jobs:
       fail-fast: false
 
     steps:
+      - name: Free up disk space
+        run: |
+          echo "Disk space before cleanup:"
+          df -h
+          sudo rm -rf /opt/hostedtoolcache
+          echo "Disk space after cleanup:"
+          df -h
+
       - name: Check out the repo
         uses: actions/checkout@v4
 
