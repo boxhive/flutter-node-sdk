@@ -102,6 +102,10 @@ RUN yes | $ANDROID_HOME/cmdline-tools/bin/sdkmanager --licenses --sdk_root=${AND
     "extras;google;google_play_services" \
     "extras;google;m2repository" \
     "add-ons;addon-google_apis-google-24" \
+    "ndk;27.2.12479018" \
+    "ndk;28.2.13676358" \
+    "ndk;29.0.14206865" \
+    "cmake;3.22.1" \
     "cmdline-tools;latest"
 
 # Install Gradle
